@@ -1,10 +1,18 @@
 import {Repository} from 'typeorm';
 import {Injectable} from '@nestjs/common';
-import {InjectRepository} from '@nestjs/typeorm';
-import { MovieRepository } from '../../domain/movie.repository';
-import { MovieTypeorm } from './movie.typeorm';
 import { CsvReader } from '../csv/csv-reader';
-import { MovieEntity } from '../../domain/movie.entity';
+import { MovieTypeorm } from './movie.typeorm';
+import {InjectRepository} from '@nestjs/typeorm';
+import { MovieEntity } from '../../domain/entities/movie.entity';
+import { MovieRepository } from '../../domain/repositories/movie.repository';
+
+interface IMovie {
+  title: string,
+  year: string,
+  studios: string,
+  producers: string,
+  winner: string,
+}
 
 @Injectable()
 export class MovieRepositoryTypeorm implements MovieRepository {
@@ -18,7 +26,7 @@ export class MovieRepositoryTypeorm implements MovieRepository {
     const filePath: string = './movie-list.csv';
     const headers: string[] = ['year', 'title', 'studios', 'producers', 'winner'];
 
-    new CsvReader().load(filePath, headers, (item: IMovieCsv) => {
+    new CsvReader().load(filePath, headers, (item: IMovie) => {
       const movie = new MovieEntity(
         item.year,
         item.title,
@@ -26,7 +34,6 @@ export class MovieRepositoryTypeorm implements MovieRepository {
         item.producers,
         item.winner
       );
-
       this.create(movie);
     })
   }
@@ -34,13 +41,15 @@ export class MovieRepositoryTypeorm implements MovieRepository {
   async create(movie: MovieEntity): Promise<MovieEntity> {
     return this.repository.save(movie);
   }
-}
 
-
-interface IMovieCsv {
-  title: string,
-  year: string,
-  studios: string,
-  producers: string,
-  winner: string,
+  async findWinners(): Promise<MovieEntity[]> {
+    const entities = await this.repository.find({ where: { winner: 'yes' } });
+    return entities.map((item: IMovie) => new MovieEntity(
+      item.year,
+      item.title,
+      item.studios,
+      item.producers,
+      item.winner
+    ));
+  }
 }

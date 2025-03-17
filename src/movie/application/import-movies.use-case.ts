@@ -1,8 +1,8 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
-import { MovieRepository } from '../domain/movie.repository';
+import { MovieRepository } from '../domain/repositories/movie.repository';
 
 @Injectable()
-export class ImportMovieListUseCase implements OnModuleInit {
+export class ImportMoviesUseCase implements OnModuleInit {
   constructor(private readonly repository: MovieRepository) {}
 
   async onModuleInit(): Promise<void> {

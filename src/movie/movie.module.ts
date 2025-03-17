@@ -1,12 +1,13 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { MovieController } from './presentation/movie.controller';
+import { AwardController } from './presentation/award.controller';
 import { MovieTypeorm } from './infrastructure/typeorm/movie.typeorm';
-import { ImportMovieListUseCase } from './application/import-movie-list.use-case';
+import { ImportMoviesUseCase } from './application/import-movies.use-case';
 import { MovieRepositoryTypeorm } from './infrastructure/typeorm/movie.repository.typeorm';
+import { GetAwardIntervalsUseCase } from './application/get-award-intervals.usecase';
 
 @Module({
-  controllers: [MovieController],
+  controllers: [AwardController],
   imports: [TypeOrmModule.forFeature([MovieTypeorm])],
   providers: [
     {
@@ -14,8 +15,14 @@ import { MovieRepositoryTypeorm } from './infrastructure/typeorm/movie.repositor
       useClass: MovieRepositoryTypeorm,
     },
     {
-      provide: ImportMovieListUseCase,
-      useFactory: (repository: MovieRepositoryTypeorm) => new ImportMovieListUseCase(repository),
+      provide: ImportMoviesUseCase,
+      useFactory: (repository: MovieRepositoryTypeorm) => new ImportMoviesUseCase(repository),
+      inject: ['MovieRepository'],
+    },
+
+    {
+      provide: GetAwardIntervalsUseCase,
+      useFactory: (repository: MovieRepositoryTypeorm) => new GetAwardIntervalsUseCase(repository),
       inject: ['MovieRepository'],
     },
   ],
