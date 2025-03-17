@@ -28,9 +28,6 @@ $ npm run test
 
 # e2e tests
 $ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
 ```
 
 # Docker Compose
@@ -56,9 +53,6 @@ $ docker compose exec app npm run test
 
 # e2e tests
 $ docker compose exec app npm run test:e2e
-
-# test coverage
-$ docker compose exec app npm run test:cov
 ```
 
 ## API Test
