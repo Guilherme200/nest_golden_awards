@@ -3,7 +3,7 @@ import { AppModule } from '../src/app.module';
 import { INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 
-describe('AwardController (integration)', () => {
+describe('AwardController (e2e)', () => {
   let app: INestApplication;
 
   beforeEach(async () => {

@@ -1,9 +1,12 @@
-import { Injectable, OnModuleInit } from '@nestjs/common';
+import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
 import { MovieRepository } from '../domain/repositories/movie.repository';
 
 @Injectable()
 export class ImportMoviesUseCase implements OnModuleInit {
-  constructor(private readonly repository: MovieRepository) {}
+  constructor(
+    @Inject('MovieRepository')
+    private readonly repository: MovieRepository
+  ) {}
 
   async onModuleInit(): Promise<void> {
     console.info('starting csv import');
@@ -12,6 +15,6 @@ export class ImportMoviesUseCase implements OnModuleInit {
   }
 
   public async execute(): Promise<any> {
-    return this.repository.loadCsv();
+    return await this.repository.loadCsv();
   }
 }

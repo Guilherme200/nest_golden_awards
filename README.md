@@ -60,3 +60,10 @@ $ docker compose exec app npm run test:e2e
 # test coverage
 $ docker compose exec app npm run test:cov
 ```
+
+## API Test
+
+```bash
+# development
+GET http://localhost:3000/awards/intervals
+```
