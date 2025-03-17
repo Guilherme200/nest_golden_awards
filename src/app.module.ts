@@ -1,10 +1,20 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { CsvBuilder } from './csv/csv.builder';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { MovieModule } from './movie/movie.module';
+import { MovieTypeorm } from './movie/infrastructure/typeorm/movie.typeorm';
 
 @Module({
-  imports: [],
-  controllers: [AppController],
-  providers: [CsvBuilder],
+  imports: [
+    TypeOrmModule.forRoot({
+      type: 'sqlite',
+      database: ':memory:',
+      entities: [MovieTypeorm],
+      synchronize: true,
+    }),
+    MovieModule,
+  ],
+  controllers: [],
 })
-export class AppModule {}
+
+export class AppModule {
+}
