@@ -32,12 +32,26 @@ describe('AwardController (e2e)', () => {
       followingWin: expect.any(Number),
     });
 
+    expect(response.body.min[0]).toMatchObject({
+      producer: "Joel Silver",
+      interval: 1,
+      previousWin: 1990,
+      followingWin: 1991,
+    });
+
     expect(response.body.max).toBeInstanceOf(Array);
     expect(response.body.max[0]).toMatchObject({
       producer: expect.any(String),
       interval: expect.any(Number),
       previousWin: expect.any(Number),
       followingWin: expect.any(Number),
+    });
+
+    expect(response.body.max[0]).toMatchObject({
+      producer: "Matthew Vaughn",
+      interval: 13,
+      previousWin: 2002,
+      followingWin: 2015,
     });
   });
 });
